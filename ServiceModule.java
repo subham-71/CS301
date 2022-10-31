@@ -129,7 +129,7 @@ class QueryRunner implements Runnable
 
             String url = "jdbc:postgresql://localhost:5432/railway"; // localhost:5432
             String username = "postgres";
-            String password = "aman_a1911";
+            String password = ""; // pw
 
             Class.forName("org.postgresql.Driver");
             Connection con = DriverManager.getConnection(url, username, password);
