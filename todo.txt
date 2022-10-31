@@ -1,0 +1,4 @@
+1. Parse the query and send it to the booking function //Done
+2. Complete the booking function
+3. Send the result to the client module
+4. Admin menu option
