@@ -5,7 +5,7 @@ public class ConnectDB {
         public static void main(String[] args) throws Exception {
                 String url = "jdbc:postgresql://localhost:5432/railway"; // localhost:5432
                 String username = "postgres";
-                String password = "aman_a1911"; // 
+                String password = ""; // pw 
                 // 1
                 String query = "select * from ac_cc";
                 
