@@ -9,7 +9,7 @@ import java.net.Socket;
 import java.util.StringTokenizer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.Date;
+// import java.util.Date;
 import java.util.*;
 import java.sql.*;
 
@@ -57,7 +57,6 @@ class book{
         String DOJ = tokens.get(no_of_passengers+2);
         String Class = tokens.get(no_of_passengers+3);
         
-        
         Statement st = con.createStatement();
         
         String table_name = train_no + "_" + DOJ + "_" + Class;
@@ -77,21 +76,41 @@ class book{
             System.out.println("Train has insufficient number of seats");
             return;
         }
-        
+
+        int coach_count =0;
+
+        if(Class == "AC"){
+            String ac_coach_count_query = "SELECT ac_count from train where uid = " + train_no + "and doj = "+ DOJ;
+            rs = st.executeQuery(ac_coach_count_query);
+            rs.next();
+            coach_count = rs.getInt("ac_count") ;
+        }
+        else if (Class == "SL") {
+            String sl_coach_count_query = "SELECT ac_count from train where uid = " + train_no + "and doj = " + DOJ;
+            rs = st.executeQuery(sl_coach_count_query);
+            rs.next();
+            coach_count = rs.getInt("sl_count");
+        }       
+                
+
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         
         
         
         for(int i=1; i<=no_of_passengers; i++){
-
+            
+            int serial_no = coach_count - checkAvailable + i;
+            int coach_no = (serial_no-1)/18 + 1;
+            int berth_no = (serial_no-1)%18 + 1;
             String query = "insert into ticket_records(uid,booking_timestamp,berth_no,doj,coach_no,coach_type,seat_type,pnr,passenger_name) values(";
             query = query + train_no + ", "; // uid
             query = query + timestamp.toString() + ", "; //timestamp
-            // query = query + Integer.toString(berth_no) + "" // berth_no
+            // query = query + Integer.toString(berth_no) + ", " // berth_no
             query = query + DOJ + ", "; // doj
-            // coach_no
+            // query = query + Integer.toString(coach_no) + ", ";// coach_no
             // seat_type
-            // pnr
+            String pnr = train_no + DOJ + Integer.toString(coach_no) + Integer.toString(berth_no); // pnr
+            
             query = query + '"' + tokens.get(i) + '"'; // pname
             query = query + ");";
 
@@ -129,7 +148,7 @@ class QueryRunner implements Runnable
 
             String url = "jdbc:postgresql://localhost:5432/railway"; // localhost:5432
             String username = "postgres";
-            String password = ""; // pw
+            String password = "aman_a1911";
 
             Class.forName("org.postgresql.Driver");
             Connection con = DriverManager.getConnection(url, username, password);
