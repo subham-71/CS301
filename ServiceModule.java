@@ -13,17 +13,25 @@ import java.util.concurrent.Executors;
 import java.util.*;
 import java.sql.*;
 
-class book{
-    
-    void admin(Connection con, int train_no, int ac_coach_count, int sl_coach_count, String DOJ) throws SQLException{
+class QueryRunner implements Runnable
+{
+    //  Declare socket for client access
+    protected Socket socketConnection;
+
+    public QueryRunner(Socket clientSocket)
+    {
+        this.socketConnection =  clientSocket;
+    }
+
+    public void admin(Connection con, int train_no, int ac_coach_count, int sl_coach_count, String DOJ) throws SQLException{
 
         Statement st = con.createStatement();
         
-        String query_insert = "Insert into ticket_records(uid,ac_coach_count,sl_coach_count,DOJ) values("    ;
-        query_insert = query_insert + Integer.toString(train_no) ;
-        query_insert = query_insert + Integer.toString(ac_coach_count) ;
-        query_insert = query_insert + Integer.toString(sl_coach_count) ;
-        query_insert = query_insert + DOJ ;      
+        String query_insert = "INSERT INTO ticket_records(uid,ac_coach_count,sl_coach_count,DOJ) values("    ;
+        query_insert = query_insert + Integer.toString(train_no) + ", ";
+        query_insert = query_insert + Integer.toString(ac_coach_count) + ", ";
+        query_insert = query_insert + Integer.toString(sl_coach_count) + ", ";
+        query_insert = query_insert + "'" + DOJ + "'" ;      
         query_insert = query_insert + ");";
         
         String ac_table_name = Integer.toString(train_no) + "_" + DOJ + "_AC" ;
@@ -40,16 +48,24 @@ class book{
         String AC_insert = "INSERT INTO "+ ac_table_name + "(available) values(" + Integer.toString(ac_coach_count*18)+");";
         String SL_insert = "INSERT INTO "+ sl_table_name + "(available) values(" + Integer.toString(sl_coach_count*18)+");";
 
-        st.executeQuery(query_insert);
-        st.executeQuery(AC_table);
-        st.executeQuery(SL_table);
-        st.executeQuery(AC_insert);
-        st.executeQuery(SL_insert);
+        // System.out.println(query_insert);
+        // System.out.println(ac_table_name);
+        // System.out.println(sl_table_name);
+        // System.out.println(AC_table);
+        // System.out.println(SL_table);
+        // System.out.println(AC_insert);
+        // System.out.println(SL_insert);
+        
+        st.executeUpdate(query_insert);
+        st.executeUpdate(AC_table);
+        st.executeUpdate(SL_table);
+        st.executeUpdate(AC_insert);
+        st.executeUpdate(SL_insert);
         
     }
     
     // void bookingFunction(Connection con, int no_of_passengers, String name_of_all_passengers, int train_no, String DOJ, String Class) throws SQLException {
-    void bookingFunction(Connection con, ArrayList <String> tokens) throws SQLException {    
+    public String bookingFunction(Connection con, ArrayList <String> tokens) throws SQLException {    
       
         // int index = 0;
         int no_of_passengers = Integer.parseInt(tokens.get(0));
@@ -60,33 +76,31 @@ class book{
         Statement st = con.createStatement();
         
         String table_name = train_no + "_" + DOJ + "_" + Class;
-        String fetch = "SELECT * FROM " + table_name + ";";
+        String fetch = "select * from " + table_name + ";";
             
         DatabaseMetaData dbm = con.getMetaData();
         ResultSet ch = dbm.getTables(null, null, table_name, new String[] {"TABLE"});
         Boolean checker = ch.next();
         if(!checker) {
-            System.out.println("Train is not available");
-            return;
+            return "Train is not available";
         }
         ResultSet rs = st.executeQuery(fetch);
         rs.next();
         int checkAvailable = rs.getInt("available");
         if(checkAvailable < no_of_passengers){
-            System.out.println("Train has insufficient number of seats");
-            return;
+            return "Train has insufficient number of seats";
         }
 
         int coach_count =0;
 
         if(Class == "AC"){
-            String ac_coach_count_query = "SELECT ac_count from train where uid = " + train_no + "and doj = "+ DOJ;
+            String ac_coach_count_query = "select ac_count from train where uid = " + train_no + "and doj = "+ DOJ;
             rs = st.executeQuery(ac_coach_count_query);
             rs.next();
             coach_count = rs.getInt("ac_count") ;
         }
         else if (Class == "SL") {
-            String sl_coach_count_query = "SELECT ac_count from train where uid = " + train_no + "and doj = " + DOJ;
+            String sl_coach_count_query = "select ac_count from train where uid = " + train_no + "and doj = " + DOJ;
             rs = st.executeQuery(sl_coach_count_query);
             rs.next();
             coach_count = rs.getInt("sl_count");
@@ -95,38 +109,44 @@ class book{
 
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         
-        
-        
         for(int i=1; i<=no_of_passengers; i++){
             
             int serial_no = coach_count - checkAvailable + i;
             int coach_no = (serial_no-1)/18 + 1;
             int berth_no = (serial_no-1)%18 + 1;
+
+            // Todo : Seat type alternative implementation
+            String type = "";
+
+            if(Class == "AC"){
+                String seat_type_query = "select type from ac_cc where berth_no = "+berth_no+";";
+                rs = st.executeQuery(seat_type_query);
+                rs.next();
+                type = rs.getString("type");
+            }
+            else{
+                String seat_type_query = "select type from sl_cc where berth_no = "+berth_no+";";
+                rs = st.executeQuery(seat_type_query);
+                rs.next();
+                type = rs.getString("type");
+            }
+
+            String pnr = train_no + DOJ + Integer.toString(coach_no) + Integer.toString(berth_no); 
+            
             String query = "insert into ticket_records(uid,booking_timestamp,berth_no,doj,coach_no,coach_type,seat_type,pnr,passenger_name) values(";
             query = query + train_no + ", "; // uid
             query = query + timestamp.toString() + ", "; //timestamp
-            // query = query + Integer.toString(berth_no) + ", " // berth_no
+            query = query + Integer.toString(berth_no) + ", "; // berth_no
             query = query + DOJ + ", "; // doj
-            // query = query + Integer.toString(coach_no) + ", ";// coach_no
-            // seat_type
-            String pnr = train_no + DOJ + Integer.toString(coach_no) + Integer.toString(berth_no); // pnr
-            
+            query = query + Integer.toString(coach_no) + ", ";// coach_no
+            query = query + type + ", ";// seat_type
+            query = query + pnr + ", "; // pnr
             query = query + '"' + tokens.get(i) + '"'; // pname
             query = query + ");";
-
         }
+
+        return "Tickets has been booked for the following request";
         
-    }
-}
-
-class QueryRunner implements Runnable
-{
-    //  Declare socket for client access
-    protected Socket socketConnection;
-
-    public QueryRunner(Socket clientSocket)
-    {
-        this.socketConnection =  clientSocket;
     }
 
     public void run()
@@ -148,10 +168,12 @@ class QueryRunner implements Runnable
 
             String url = "jdbc:postgresql://localhost:5432/railway"; // localhost:5432
             String username = "postgres";
-            String password = "aman_a1911";
+            String password = "";
 
             Class.forName("org.postgresql.Driver");
             Connection con = DriverManager.getConnection(url, username, password);
+
+            admin(con,12891,5,6,"2022-12-10");
 
             while(true)
             {
@@ -163,17 +185,7 @@ class QueryRunner implements Runnable
 
                 //  Tokenize here
                 StringTokenizer tokenizer = new StringTokenizer(clientCommand);
-
-                ArrayList<String> tokens = new ArrayList<String>();
-                while(tokenizer.hasMoreElements()){
-                    queryInput = tokenizer.nextToken();
-                    tokens.add(queryInput);
-                }
-
-
-                // for(int i=0; i<tokens.size(); i++){
-                //     System.out.println(tokens.get(i));   
-                // }
+                queryInput = tokenizer.nextToken();
                 
                 if(queryInput.equals("Finish"))
                 {
@@ -189,6 +201,18 @@ class QueryRunner implements Runnable
                     return;
                 }
 
+                ArrayList<String> tokens = new ArrayList<String>();
+                tokens.add(queryInput);
+                while(tokenizer.hasMoreElements()){
+                    queryInput = tokenizer.nextToken();
+                    tokens.add(queryInput);
+                }
+
+                String result = bookingFunction(con, tokens);
+                System.out.println(result);
+                printWriter.println(result);
+                
+
                 //-------------- your DB code goes here----------------------------
                 // try
                 // {
@@ -200,21 +224,21 @@ class QueryRunner implements Runnable
                 // }
                  //
 
-                String query = "select * from ac_cc";
+                // String query = "select * from ac_cc";
                 
-                DatabaseMetaData dbm = con.getMetaData();
-                ResultSet ch = dbm.getTables(null, null, "ac_cc", new String[] {"TABLE"});
-                System.out.println(ch.next());
+                // DatabaseMetaData dbm = con.getMetaData();
+                // ResultSet ch = dbm.getTables(null, null, "ac_cc", new String[] {"TABLE"});
+                // System.out.println(ch.next());
 
-                Statement st = con.createStatement();
-                ResultSet rs = st.executeQuery(query);
-                while(rs.next()){
-                        int id = rs.getInt("berth_no");
-                        String name = rs.getString("type");
-                        System.out.println(id + " - " + name);
-                }
+                // Statement st = con.createStatement();
+                // ResultSet rs = st.executeQuery(query);
+                // while(rs.next()){
+                //         int id = rs.getInt("berth_no");
+                //         String name = rs.getString("type");
+                //         System.out.println(id + " - " + name);
+                // }
 
-                responseQuery = "******* Dummy result ******";
+                // responseQuery = "******* Dummy result ******";
 
                 //----------------------------------------------------------------
                 
