@@ -114,15 +114,18 @@ class QueryRunner implements Runnable
             coach_count = rs.getInt("ac_count") * 18 ;
         }
         else if (Class.compareTo("sl") == 0) {
-            String sl_coach_count_query = "select ac_count from train where uid = " + train_no + " and doj = '" + DOJ + "';";
-            rs = st.executeQuery(sl_coach_count_query);
-            rs.next();
-            coach_count = rs.getInt("sl_count") * 24;
+            String sl_coach_count_query = "select sl_count from train where uid = " + train_no + " and doj = '" + DOJ + "';";
+            System.out.println(sl_coach_count_query);
+            ResultSet rs1 = st.executeQuery(sl_coach_count_query);
+            rs1.next();
+            coach_count = rs1.getInt("sl_count") * 24;
         }       
         
         System.out.println(coach_count);
 
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        String pnr = "";
+        String pnr_doj = DOJ.substring(0,4) + DOJ.substring(5,7) + DOJ.substring(8,10);
         
         for(int i=1; i<=no_of_passengers; i++){
             int serial_no;
@@ -131,8 +134,6 @@ class QueryRunner implements Runnable
             // Todo : Seat type alternative implementation
             String type = "";
             
-            System.out.println("Flag 0");
-
             if(Class.compareTo("ac") == 0){
                 serial_no = coach_count - checkAvailable + i;
                 coach_no = (serial_no-1)/18 + 1;
@@ -155,26 +156,37 @@ class QueryRunner implements Runnable
                 type = rs.getString("type");
             }
 
-            System.out.println("Flag 1");
-
-
-            String pnr = train_no + DOJ + Integer.toString(coach_no) + Integer.toString(berth_no); 
+            if(i==1) {
+                pnr = train_no+ pnr_doj;
+                if(coach_no<10) pnr = pnr + '0';
+                pnr = pnr + Integer.toString(coach_no);
+                if(berth_no<10) pnr = pnr + '0';
+                pnr = pnr + Integer.toString(berth_no);
+            }
             
             String query = "insert into ticket_records(uid,booking_timestamp,berth_no,doj,coach_no,coach_type,seat_type,pnr,passenger_name) values(";
-            query = query + train_no + ", "; // uid
-            query = query + timestamp.toString() + ", "; //timestamp
-            query = query + Integer.toString(berth_no) + ", "; // berth_no
-            query = query + DOJ + ", "; // doj
-            query = query + Integer.toString(coach_no) + ", ";// coach_no
-            query = query + type + ", ";// seat_type
-            query = query + pnr + ", "; // pnr
-            query = query + '"' + tokens.get(i) + '"'; // pname
+            query = query + train_no + ", '"; // uid
+            query = query + timestamp.toString().substring(0, 19) + "', "; //timestamp 0 - 19
+            query = query + Integer.toString(berth_no) + ", '"; // berth_no
+            query = query + DOJ + "', "; // doj
+            query = query + Integer.toString(coach_no) + ", '";// coach_no
+            query = query + Class + "', '"; // coach type
+            query = query + type + "', '";// seat_type
+            query = query + pnr + "', "; // pnr
+            query = query + "'" + tokens.get(i) + "'"; // pname
             query = query + ");";
             
             System.out.println(query);
             st.executeUpdate(query);
         }
 
+        int update_count = checkAvailable - no_of_passengers;
+        String update_query = "update " + table_name + " set available = " + Integer.toString(update_count) + ";";
+
+        System.out.println(update_query);
+        st.executeUpdate(update_query);
+        
+        
         return "Tickets has been booked for the following request";
         
     }
@@ -198,7 +210,7 @@ class QueryRunner implements Runnable
 
             String url = "jdbc:postgresql://localhost:5432/railway"; // localhost:5432
             String username = "postgres";
-            String password = "";
+            String password = "aman_a1911";
 
             Class.forName("org.postgresql.Driver");
             Connection con = DriverManager.getConnection(url, username, password);
@@ -320,3 +332,4 @@ public class ServiceModule
     }
 }
 
+ 

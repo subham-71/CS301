@@ -3,7 +3,7 @@ import java.sql.*;
 public class ConnectDB {
         
         public static void main(String[] args) throws Exception {
-                String url = "jdbc:postgresql://localhost:5432/railway"; // localhost:5432
+                String url = "jdbc:postgresql://localhost:5432/"; // localhost:5432
                 String username = "postgres";
                 String password = ""; // 
                 // 1

@@ -4,8 +4,6 @@
 4. Admin menu option
 
 todo:
-time stamp 
-decrease seats update
 manage output file based on queries
 
 
