@@ -6,6 +6,7 @@
 todo:
 time stamp 
 decrease seats update
+manage output file based on queries
 
 
 Insert into ac_cc(berth_no,type) values(1,'lb');
