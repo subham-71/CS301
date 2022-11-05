@@ -14,6 +14,7 @@ import java.util.ResourceBundle;
 // import java.util.Date;
 import java.util.*;
 import java.sql.*;
+import javax.sql.DataSource;
 
 class QueryRunner implements Runnable
 {
@@ -24,53 +25,9 @@ class QueryRunner implements Runnable
     {
         this.socketConnection =  clientSocket;
     }
-
-    public void admin(Connection con, int train_no, int ac_coach_count, int sl_coach_count, String DOJ) throws SQLException{
-
-        Statement st = con.createStatement();
-        String dDOJ = DOJ.substring(0,4) + "_" + DOJ.substring(5,7) + "_" + DOJ.substring(8,10);
-        
-        String query_insert = "INSERT INTO train(uid,ac_count,sl_count,DOJ) values("    ;
-        query_insert = query_insert + Integer.toString(train_no) + ", ";
-        query_insert = query_insert + Integer.toString(ac_coach_count) + ", ";
-        query_insert = query_insert + Integer.toString(sl_coach_count) + ", ";
-        query_insert = query_insert + "'" + DOJ + "'" ;      
-        query_insert = query_insert + ");";
-        
-        String ac_table_name = "t" + Integer.toString(train_no) + "_" + dDOJ + "_ac" ;
-        String sl_table_name = "t" + Integer.toString(train_no) + "_" + dDOJ + "_sl" ;
-        
-        String AC_table = "CREATE TABLE " + ac_table_name + " (";
-        AC_table = AC_table + "available INT NOT NULL";
-        AC_table = AC_table + " );";
-
-        String SL_table = "CREATE TABLE " + sl_table_name + " (";
-        SL_table = SL_table + "available INT NOT NULL";
-        SL_table = SL_table + " );";
-
-        String AC_insert = "INSERT INTO "+ ac_table_name + "(available) values(" + Integer.toString(ac_coach_count*18)+");";
-        String SL_insert = "INSERT INTO "+ sl_table_name + "(available) values(" + Integer.toString(sl_coach_count*24)+");";
-
-        // System.out.println(query_insert);
-        // System.out.println(AC_table);
-        // System.out.println(SL_table);
-        // System.out.println(AC_insert);
-        // System.out.println(SL_insert);
-        
-        
-        st.executeUpdate(query_insert);
-        st.executeUpdate(AC_table);
-        st.executeUpdate(SL_table);
-        st.executeUpdate(AC_insert);
-        st.executeUpdate(SL_insert);
-        
-    }
     
     // void bookingFunction(Connection con, int no_of_passengers, String name_of_all_passengers, int train_no, String DOJ, String Class) throws SQLException {
     public String bookingFunction(Connection con, ArrayList <String> tokens) throws SQLException {    
-      
-        // int index = 0;
-
 
         int no_of_passengers = Integer.parseInt(tokens.get(0));
         String train_no = tokens.get(no_of_passengers+1);
@@ -84,7 +41,6 @@ class QueryRunner implements Runnable
         Statement st = con.createStatement();
         
         String table_name = "t" + train_no + "_" + dDOJ + "_" + Class;
-        String fetch = "select * from " + table_name + ";";
         
         //System.out.println(fetch);
         DatabaseMetaData dbm = con.getMetaData();
@@ -94,103 +50,121 @@ class QueryRunner implements Runnable
         // } 
 
         Boolean checker = ch.next();
-        //System.out.println(checker); 
+        //System.out.println(checker);
         if(!checker) {
             return "Train is not available";
-        }
-        ResultSet rs = st.executeQuery(fetch);
-        rs.next();
-        int checkAvailable = rs.getInt("available");
-        // System.out.println(checkAvailable);
-        if(checkAvailable < no_of_passengers){
-            return "Train has insufficient number of seats";
-        }
+        } 
 
-        int coach_count =0;
-        //System.out.println(Class);
-        if(Class.compareTo("ac") == 0){
-            String ac_coach_count_query = "select ac_count from train where uid = " + train_no + " and doj = '"+ DOJ + "';";
-            //System.out.println(ac_coach_count_query);
-            rs = st.executeQuery(ac_coach_count_query);
+        try{
+            con.setAutoCommit(false);
+            String fetch = "select * from " + table_name + ";";
+            ResultSet rs = st.executeQuery(fetch);
             rs.next();
-            coach_count = rs.getInt("ac_count") * 18 ;
-        }
-        else if (Class.compareTo("sl") == 0) {
-            String sl_coach_count_query = "select sl_count from train where uid = " + train_no + " and doj = '" + DOJ + "';";
-            //System.out.println(sl_coach_count_query);
-            ResultSet rs1 = st.executeQuery(sl_coach_count_query);
-            rs1.next();
-            coach_count = rs1.getInt("sl_count") * 24;
-        }       
-        
-        //System.out.println(coach_count);
+            int checkAvailable = rs.getInt("available");
+            // System.out.println(checkAvailable);
+            if(checkAvailable < no_of_passengers){
+                con.commit();
+                return "Train has insufficient number of seats";
+            }
 
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        String pnr = "";
-        String pnr_doj = DOJ.substring(0,4) + DOJ.substring(5,7) + DOJ.substring(8,10);
-        
-        for(int i=1; i<=no_of_passengers; i++){
-            int serial_no;
-            int coach_no;
-            int berth_no;
-            // Todo : Seat type alternative implementation
-            String type = "";
-            
+            int coach_count =0;
+            //System.out.println(Class);
             if(Class.compareTo("ac") == 0){
-                serial_no = coach_count - checkAvailable + i;
-                coach_no = (serial_no-1)/18 + 1;
-                berth_no = (serial_no-1)%18 + 1;
-
-                String seat_type_query = "select type from ac_cc where berth_no = "+ berth_no + ";";
-                //System.out.println(seat_type_query);
-                rs = st.executeQuery(seat_type_query);
+                String ac_coach_count_query = "select ac_count from train where uid = " + train_no + " and doj = '"+ DOJ + "';";
+                //System.out.println(ac_coach_count_query);
+                rs = st.executeQuery(ac_coach_count_query);
                 rs.next();
-                type = rs.getString("type");
+                coach_count = rs.getInt("ac_count") * 18 ;
             }
-            else{
-                serial_no = coach_count - checkAvailable + i;
-                coach_no = (serial_no-1)/24 + 1;
-                berth_no = (serial_no-1)%24 + 1;
-
-                String seat_type_query = "select type from sl_cc where berth_no = "+berth_no+";";
-                rs = st.executeQuery(seat_type_query);
-                rs.next();
-                type = rs.getString("type");
-            }
-
-            if(i==1) {
-                pnr = train_no+ pnr_doj;
-                if(coach_no<10) pnr = pnr + '0';
-                pnr = pnr + Integer.toString(coach_no);
-                if(berth_no<10) pnr = pnr + '0';
-                pnr = pnr + Integer.toString(berth_no);
-            }
+            else if (Class.compareTo("sl") == 0) {
+                String sl_coach_count_query = "select sl_count from train where uid = " + train_no + " and doj = '" + DOJ + "';";
+                //System.out.println(sl_coach_count_query);
+                ResultSet rs1 = st.executeQuery(sl_coach_count_query);
+                rs1.next();
+                coach_count = rs1.getInt("sl_count") * 24;
+            }       
             
-            String query = "insert into ticket_records(uid,booking_timestamp,berth_no,doj,coach_no,coach_type,seat_type,pnr,passenger_name) values(";
-            query = query + train_no + ", '"; // uid
-            query = query + timestamp.toString().substring(0, 19) + "', "; //timestamp 0 - 19
-            query = query + Integer.toString(berth_no) + ", '"; // berth_no
-            query = query + DOJ + "', "; // doj
-            query = query + Integer.toString(coach_no) + ", '";// coach_no
-            query = query + Class + "', '"; // coach type
-            query = query + type + "', '";// seat_type
-            query = query + pnr + "', "; // pnr
-            query = query + "'" + tokens.get(i) + "'"; // pname
-            query = query + ");";
+            //System.out.println(coach_count);
+
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+            String pnr = "";
+            String pnr_doj = DOJ.substring(0,4) + DOJ.substring(5,7) + DOJ.substring(8,10);
             
-            //System.out.println(query);
-            st.executeUpdate(query);
+            for(int i=1; i<=no_of_passengers; i++){
+                int serial_no;
+                int coach_no;
+                int berth_no;
+                // Todo : Seat type alternative implementation
+                String type = "";
+                
+                if(Class.compareTo("ac") == 0){
+                    serial_no = coach_count - checkAvailable + i;
+                    coach_no = (serial_no-1)/18 + 1;
+                    berth_no = (serial_no-1)%18 + 1;
+
+                    String seat_type_query = "select type from ac_cc where berth_no = "+ berth_no + ";";
+                    //System.out.println(seat_type_query);
+                    rs = st.executeQuery(seat_type_query);
+                    rs.next();
+                    type = rs.getString("type");
+                }
+                else{
+                    serial_no = coach_count - checkAvailable + i;
+                    coach_no = (serial_no-1)/24 + 1;
+                    berth_no = (serial_no-1)%24 + 1;
+
+                    String seat_type_query = "select type from sl_cc where berth_no = "+berth_no+";";
+                    rs = st.executeQuery(seat_type_query);
+                    rs.next();
+                    type = rs.getString("type");
+                }
+
+                if(i==1) {
+                    pnr = train_no+ pnr_doj;
+                    if(coach_no<10) pnr = pnr + '0';
+                    pnr = pnr + Integer.toString(coach_no);
+                    if(berth_no<10) pnr = pnr + '0';
+                    pnr = pnr + Integer.toString(berth_no);
+                }
+                
+                String query = "insert into ticket_records(uid,booking_timestamp,berth_no,doj,coach_no,coach_type,seat_type,pnr,passenger_name) values(";
+                query = query + train_no + ", '"; // uid
+                query = query + timestamp.toString().substring(0, 19) + "', "; //timestamp 0 - 19
+                query = query + Integer.toString(berth_no) + ", '"; // berth_no
+                query = query + DOJ + "', "; // doj
+                query = query + Integer.toString(coach_no) + ", '";// coach_no
+                query = query + Class + "', '"; // coach type
+                query = query + type + "', '";// seat_type
+                query = query + pnr + "', "; // pnr
+                query = query + "'" + tokens.get(i) + "'"; // pname
+                query = query + ");";
+                
+                //System.out.println(query);
+                st.executeUpdate(query);
+            }
+
+            int update_count = checkAvailable - no_of_passengers;
+            String update_query = "update " + table_name + " set available = " + Integer.toString(update_count) + ";";
+
+            //System.out.println(update_query);
+            st.executeUpdate(update_query);
+            con.commit();
+            return "Tickets has been booked for the following request";
+        }
+        catch(SQLException e){
+            //JDBCTutorialUtilities.printSQLException(e);
+            if (con != null) {
+                try {
+                    System.err.print("Transsaction is being rolled back\n");
+                    con.rollback();
+                } catch (SQLException excep) {
+                    //JDBCTutorialUtilities.printSQLException(excep);
+                }
+                
+            }
+            return "This transaction has been rolled back";
         }
 
-        int update_count = checkAvailable - no_of_passengers;
-        String update_query = "update " + table_name + " set available = " + Integer.toString(update_count) + ";";
-
-        //System.out.println(update_query);
-        st.executeUpdate(update_query);
-        
-        
-        return "Tickets has been booked for the following request";
-        
     }
 
     public void run()
@@ -219,7 +193,7 @@ class QueryRunner implements Runnable
             Class.forName("org.postgresql.Driver");
             Connection con = DriverManager.getConnection(url, username, password);
 
-            // admin(con,12891,5,6,"2022-12-10");
+            
 
             while(true)
             {
