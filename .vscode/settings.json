@@ -1,6 +1,7 @@
 {
         "java.project.referencedLibraries": [
                 "lib/**/*.jar",
-                "postgresql-42.5.0.jar"
+                "postgresql-42.5.0.jar",
+                "java-dotenv-5.2.2.jar"
         ]
 }

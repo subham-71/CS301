@@ -9,6 +9,8 @@ import java.net.Socket;
 import java.util.StringTokenizer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.ResourceBundle;
+
 // import java.util.Date;
 import java.util.*;
 import java.sql.*;
@@ -35,8 +37,8 @@ class QueryRunner implements Runnable
         query_insert = query_insert + "'" + DOJ + "'" ;      
         query_insert = query_insert + ");";
         
-        String ac_table_name = "t" + Integer.toString(train_no) + "_" + dDOJ + "_AC" ;
-        String sl_table_name = "t" + Integer.toString(train_no) + "_" + dDOJ + "_SL" ;
+        String ac_table_name = "t" + Integer.toString(train_no) + "_" + dDOJ + "_ac" ;
+        String sl_table_name = "t" + Integer.toString(train_no) + "_" + dDOJ + "_sl" ;
         
         String AC_table = "CREATE TABLE " + ac_table_name + " (";
         AC_table = AC_table + "available INT NOT NULL";
@@ -49,11 +51,11 @@ class QueryRunner implements Runnable
         String AC_insert = "INSERT INTO "+ ac_table_name + "(available) values(" + Integer.toString(ac_coach_count*18)+");";
         String SL_insert = "INSERT INTO "+ sl_table_name + "(available) values(" + Integer.toString(sl_coach_count*24)+");";
 
-        System.out.println(query_insert);
-        System.out.println(AC_table);
-        System.out.println(SL_table);
-        System.out.println(AC_insert);
-        System.out.println(SL_insert);
+        // System.out.println(query_insert);
+        // System.out.println(AC_table);
+        // System.out.println(SL_table);
+        // System.out.println(AC_insert);
+        // System.out.println(SL_insert);
         
         
         st.executeUpdate(query_insert);
@@ -84,7 +86,7 @@ class QueryRunner implements Runnable
         String table_name = "t" + train_no + "_" + dDOJ + "_" + Class;
         String fetch = "select * from " + table_name + ";";
         
-        System.out.println(fetch);
+        //System.out.println(fetch);
         DatabaseMetaData dbm = con.getMetaData();
         ResultSet ch = dbm.getTables(null, null, table_name, new String[] {"TABLE"});
         // if (!ch.next()) {    
@@ -92,7 +94,7 @@ class QueryRunner implements Runnable
         // } 
 
         Boolean checker = ch.next();
-        System.out.println(checker); 
+        //System.out.println(checker); 
         if(!checker) {
             return "Train is not available";
         }
@@ -105,23 +107,23 @@ class QueryRunner implements Runnable
         }
 
         int coach_count =0;
-        System.out.println(Class);
+        //System.out.println(Class);
         if(Class.compareTo("ac") == 0){
             String ac_coach_count_query = "select ac_count from train where uid = " + train_no + " and doj = '"+ DOJ + "';";
-            System.out.println(ac_coach_count_query);
+            //System.out.println(ac_coach_count_query);
             rs = st.executeQuery(ac_coach_count_query);
             rs.next();
             coach_count = rs.getInt("ac_count") * 18 ;
         }
         else if (Class.compareTo("sl") == 0) {
             String sl_coach_count_query = "select sl_count from train where uid = " + train_no + " and doj = '" + DOJ + "';";
-            System.out.println(sl_coach_count_query);
+            //System.out.println(sl_coach_count_query);
             ResultSet rs1 = st.executeQuery(sl_coach_count_query);
             rs1.next();
             coach_count = rs1.getInt("sl_count") * 24;
         }       
         
-        System.out.println(coach_count);
+        //System.out.println(coach_count);
 
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         String pnr = "";
@@ -140,7 +142,7 @@ class QueryRunner implements Runnable
                 berth_no = (serial_no-1)%18 + 1;
 
                 String seat_type_query = "select type from ac_cc where berth_no = "+ berth_no + ";";
-                System.out.println(seat_type_query);
+                //System.out.println(seat_type_query);
                 rs = st.executeQuery(seat_type_query);
                 rs.next();
                 type = rs.getString("type");
@@ -176,14 +178,14 @@ class QueryRunner implements Runnable
             query = query + "'" + tokens.get(i) + "'"; // pname
             query = query + ");";
             
-            System.out.println(query);
+            //System.out.println(query);
             st.executeUpdate(query);
         }
 
         int update_count = checkAvailable - no_of_passengers;
         String update_query = "update " + table_name + " set available = " + Integer.toString(update_count) + ";";
 
-        System.out.println(update_query);
+        //System.out.println(update_query);
         st.executeUpdate(update_query);
         
         
@@ -208,9 +210,11 @@ class QueryRunner implements Runnable
             String responseQuery = "" ;
             String queryInput = "" ;
 
-            String url = "jdbc:postgresql://localhost:5432/railway"; // localhost:5432
-            String username = "postgres";
-            String password = "aman_a1911";
+            ResourceBundle rd = ResourceBundle.getBundle("config");
+            
+            String url = rd.getString("url");
+            String username = rd.getString("username");
+            String password = rd.getString("password");
 
             Class.forName("org.postgresql.Driver");
             Connection con = DriverManager.getConnection(url, username, password);
@@ -221,7 +225,7 @@ class QueryRunner implements Runnable
             {
                 // Read client query
                 clientCommand = bufferedInput.readLine();
-                System.out.println(clientCommand);
+                //System.out.println(clientCommand);
                 // System.out.println("Recieved data <" + clientCommand + "> from client : " 
                 //                     + socketConnection.getRemoteSocketAddress().toString());
 
@@ -251,7 +255,7 @@ class QueryRunner implements Runnable
                 }
 
                 String result = bookingFunction(con, tokens);
-                System.out.println(result);
+                //System.out.println(result);
                 printWriter.println(result);
                 
 

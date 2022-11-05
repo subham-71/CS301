@@ -1,11 +1,13 @@
 import java.sql.*;
+import java.util.ResourceBundle;
 
 public class ConnectDB {
         
         public static void main(String[] args) throws Exception {
-                String url = "jdbc:postgresql://localhost:5432/"; // localhost:5432
+                ResourceBundle rd = ResourceBundle.getBundle("config");
+                String url = "jdbc:postgresql://localhost:5432/railway"; // localhost:5432
                 String username = "postgres";
-                String password = ""; // 
+                String password = rd.getString("password"); // 
                 // 1
                 String query = "select * from ac_cc";
                 

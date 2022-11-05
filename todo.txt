@@ -5,6 +5,8 @@
 
 todo:
 manage output file based on queries
+create sql file for queries
+multithreading
 
 
 Insert into ac_cc(berth_no,type) values(1,'lb');
