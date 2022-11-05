@@ -1,2 +1,2 @@
-This transaction has been rolled back
+Tickets has been booked for the following request
 

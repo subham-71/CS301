@@ -29,6 +29,8 @@ class QueryRunner implements Runnable
     // void bookingFunction(Connection con, int no_of_passengers, String name_of_all_passengers, int train_no, String DOJ, String Class) throws SQLException {
     public String bookingFunction(Connection con, ArrayList <String> tokens) throws SQLException {    
 
+        int booked = 0;
+
         int no_of_passengers = Integer.parseInt(tokens.get(0));
         String train_no = tokens.get(no_of_passengers+1);
         String DOJ = tokens.get(no_of_passengers+2);
@@ -149,14 +151,15 @@ class QueryRunner implements Runnable
             //System.out.println(update_query);
             st.executeUpdate(update_query);
             con.commit();
+            booked = 1;
             return "Tickets has been booked for the following request";
         }
         catch(SQLException e){
             //JDBCTutorialUtilities.printSQLException(e);
             if (con != null) {
                 try {
-                    System.err.print("Transsaction is being rolled back\n");
                     con.rollback();
+                    return bookingFunction(con, tokens);
                 } catch (SQLException excep) {
                     //JDBCTutorialUtilities.printSQLException(excep);
                 }
