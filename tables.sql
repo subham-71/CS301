@@ -34,18 +34,36 @@ PNR VARCHAR (20) not null,
 passenger_name VARCHAR(20) not null,
 Primary key(uid, berth_no, DOJ, coach_no, coach_type, seat_type)
 );
+
+
+
+
+
+
+
+
+
 CREATE TABLE station(
 Uid INT not null,
 DOJ date not null,
 Arrival_time time not null,
 Departure_time time not null,
 Order_of_station INT,
-Primary key (uid,DOJ,arrival_time)
+Name VARCHAR(20) not null,
+Primary key (uid,DOJ,order_of_station)
 );
 
--- dummy data query
+
+DUMMY DATA QUERY
+
+
 Insert into train(uid,ac_count,sl_count,DOJ) values(12891,  5, 6, ‘2022-12-10’);
 Insert into train(uid,ac_count,sl_count,DOJ) values(12891,  5, 6, ‘2022-12-11’);
+ 
+
+
+
+
 
 Insert into ac_cc(berth_no,type) values(1,'lb');
 Insert into ac_cc(berth_no,type) values(2,'lb');
