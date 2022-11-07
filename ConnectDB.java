@@ -5,9 +5,9 @@ public class ConnectDB {
         
         public static void main(String[] args) throws Exception {
                 ResourceBundle rd = ResourceBundle.getBundle("config");
-                String url = "jdbc:postgresql://localhost:5432/railway"; // localhost:5432
-                String username = "postgres";
-                String password = rd.getString("password"); // 
+                String url = rd.getString("url"); // localhost:5432
+                String username = rd.getString("username");
+                String password = rd.getString("password");
                 // 1
                 String query = "select * from ac_cc";
                 

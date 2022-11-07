@@ -57,5 +57,12 @@ Insert into sl_cc(berth_no,type) values(22,'ub');
 Insert into sl_cc(berth_no,type) values(23,'sl');
 Insert into sl_cc(berth_no,type) values(24,'su');
 
+Insert into station(uid,doj,arrival_time,departure_time,order_of_station,name) values(12891,'2022-12-10', '01:01:01' , '01:30:01' ,2,'Ahmedabad');
+Insert into station(uid,doj,arrival_time,departure_time,order_of_station,name) values(12891,'2022-12-10', '03:03:03' , '03:48:01' ,5,'Udaipur');
 
+Insert into station(uid,doj,arrival_time,departure_time,order_of_station,name) values(12892,'2022-12-10', '05:03:03' , '05:48:01' ,1,'Jaipur');
+Insert into station(uid,doj,arrival_time,departure_time,order_of_station,name) values(12892,'2022-12-10', '06:03:03' , '06:48:01' ,5,'Udaipur');
+
+Insert into station(uid,doj,arrival_time,departure_time,order_of_station,name) values(12893,'2022-12-10', '01:30:01' , '01:50:01' ,2,'Ahmedabad');
+Insert into station(uid,doj,arrival_time,departure_time,order_of_station,name) values(12893,'2022-12-10', '03:53:03' , '04:48:01' ,3,'Jaipur');
 

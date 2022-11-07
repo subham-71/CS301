@@ -1,13 +1,13 @@
-3 aman parth subham 12891 2022-12-10 sl
-3 ama parh suham 12891 2022-12-10 sl
-3 amn pah subha 12891 2022-12-10 sl
-3 man partho subhams 12891 2022-12-10 sl
-3 aan parthi subhamo 12891 2022-12-10 sl
-3 aaman parthl subhama 12891 2022-12-10 sl
-3 amsan parthp subhame 12891 2022-12-10 sl
-3 amafn partha subhamy 12891 2022-12-10 sl
-3 amarn parthq subhamt 12891 2022-12-10 sl
-3 amayn parther subhaml 12891 2022-12-10 sl
+3 aman parth subham 12893 2022-02-10 sl
+3 ama parh suham 12893 2022-02-10 sl
+3 amn pah subha 12893 2022-02-10 sl
+3 man partho subhams 12893 2022-02-10 sl
+3 aan parthi subhamo 12893 2022-02-10 sl
+3 aaman parthl subhama 12893 2022-02-10 sl
+3 amsan parthp subhame 12893 2022-02-10 sl
+3 amafn partha subhamy 12893 2022-02-10 sl
+3 amarn parthq subhamt 12893 2022-02-10 sl
+3 amayn parther subhaml 12893 2022-02-10 sl
 Finish
 <no_of_passengers> <name_of_all_passengers> <train_no> <Doj> <Class>	//query-1
 <no_of_passengers> <name_of_all_passengers> <train_no> <Doj> <Class>	//query-2

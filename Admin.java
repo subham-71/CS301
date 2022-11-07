@@ -47,7 +47,7 @@ public class Admin {
             Class.forName("org.postgresql.Driver");
             Connection con = DriverManager.getConnection(url, username, password);
 
-            admin(con,12892,5,6,"2022-02-10");
+            admin(con,12893,2,1,"2022-02-10");
             
             con.close();
     }

@@ -10,11 +10,12 @@ import java.util.StringTokenizer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.ResourceBundle;
+import java.time.Duration;
+import java.time.Instant;
 
 // import java.util.Date;
 import java.util.*;
 import java.sql.*;
-import javax.sql.DataSource;
 
 class QueryRunner implements Runnable
 {
@@ -231,8 +232,13 @@ class QueryRunner implements Runnable
                     tokens.add(queryInput);
                 }
 
+                // long start = System.nanoTime();
+
                 String result = bookingFunction(con, tokens);
-                //System.out.println(result);
+
+                // long end = System.nanoTime();
+                // //System.out.println(result);
+                // System.out.println("Response Time : " + (end-start));
                 printWriter.println(result);
                 
 
@@ -244,21 +250,6 @@ class QueryRunner implements Runnable
                 // catch (InterruptedException e)
                 // {
                 //     e.printStackTrace();
-                // }
-                 //
-
-                // String query = "select * from ac_cc";
-                
-                // DatabaseMetaData dbm = con.getMetaData();
-                // ResultSet ch = dbm.getTables(null, null, "ac_cc", new String[] {"TABLE"});
-                // System.out.println(ch.next());
-
-                // Statement st = con.createStatement();
-                // ResultSet rs = st.executeQuery(query);
-                // while(rs.next()){
-                //         int id = rs.getInt("berth_no");
-                //         String name = rs.getString("type");
-                //         System.out.println(id + " - " + name);
                 // }
 
                 // responseQuery = "******* Dummy result ******";
@@ -297,18 +288,27 @@ public class ServiceModule
         Socket socketConnection = null;
         
         // Always-ON server
+        // long start = System.nanoTime();
+        // System.out.println("Server start time : " + start); 
         while(true)
         {
             System.out.println("Listening port : " + serverPort 
                                 + "\nWaiting for clients...");
             socketConnection = serverSocket.accept();   // Accept a connection from a client
+            long c_s = System.nanoTime(); 
             System.out.println("Accepted client :" 
                                 + socketConnection.getRemoteSocketAddress().toString() 
-                                + "\n");
+                                );
+            
             //  Create a runnable task
             Runnable runnableTask = new QueryRunner(socketConnection);
             //  Submit task for execution   
             executorService.submit(runnableTask);   
+            long c_e = System.nanoTime();
+
+            // System.out.println("Client Start time : " + (c_s-start));
+            // System.out.println("Client End time : " + (c_e-start));
+            System.out.println("Client Exec time : " + (c_e-c_s) + "\n");
         }
     }
 }
