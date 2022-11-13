@@ -5,9 +5,15 @@
 
 todo:
 manage output file based on queries
-create sql file for queries
-multithreading
+update sql file for queries
+multithreading - parallelism - (top -h) - GIL
+admin file parse
+seat allocation method
+name  - ',' parse change - slice
+upper bound on train searching time gap between trains and search on a fixed date (option menu)
 
+Test Sets:
+Add 2 trains, 4652 and 22517 in db with 999 coaches in both category on 2022-11-01
 
 Insert into ac_cc(berth_no,type) values(1,'lb');
 Insert into ac_cc(berth_no,type) values(2,'lb');
@@ -65,4 +71,7 @@ Insert into station(uid,doj,arrival_time,departure_time,order_of_station,name) v
 
 Insert into station(uid,doj,arrival_time,departure_time,order_of_station,name) values(12893,'2022-12-10', '01:30:01' , '01:50:01' ,2,'Ahmedabad');
 Insert into station(uid,doj,arrival_time,departure_time,order_of_station,name) values(12893,'2022-12-10', '03:53:03' , '04:48:01' ,3,'Jaipur');
+
+
+
 
