@@ -10,6 +10,7 @@ import java.util.StringTokenizer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.ResourceBundle;
+
 // import java.time.Duration;
 // import java.time.Instant;
 
@@ -130,6 +131,11 @@ class QueryRunner implements Runnable
                     pnr = pnr + Integer.toString(berth_no);
                 }
                 
+                String pname = tokens.get(i);
+                if(i != no_of_passengers){
+                    pname = pname.substring(0, pname.length() - 1);
+                }
+                
                 String query = "insert into ticket_records(uid,booking_timestamp,berth_no,doj,coach_no,coach_type,seat_type,pnr,passenger_name) values(";
                 query = query + train_no + ", '"; // uid
                 query = query + timestamp.toString().substring(0, 19) + "', "; //timestamp 0 - 19
@@ -139,7 +145,7 @@ class QueryRunner implements Runnable
                 query = query + Class + "', '"; // coach type
                 query = query + type + "', '";// seat_type
                 query = query + pnr + "', "; // pnr
-                query = query + "'" + tokens.get(i) + "'"; // pname
+                query = query + "'" + pname + "'"; // pname
                 query = query + ");";
                 
                 //System.out.println(query);
@@ -196,8 +202,9 @@ class QueryRunner implements Runnable
 
             Class.forName("org.postgresql.Driver");
             Connection con = DriverManager.getConnection(url, username, password);
-
             
+            // Setting all transaction isolation to serializable
+            con.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
 
             while(true)
             {
@@ -211,7 +218,7 @@ class QueryRunner implements Runnable
                 StringTokenizer tokenizer = new StringTokenizer(clientCommand);
                 queryInput = tokenizer.nextToken();
                 
-                if(queryInput.equals("Finish"))
+                if(queryInput.equals("#")) // EOF: # 
                 {
                     String returnMsg = "Connection Terminated - client : " 
                                         + socketConnection.getRemoteSocketAddress().toString();

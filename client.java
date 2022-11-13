@@ -78,21 +78,32 @@ public class client
 {
     public static void main(String args[])throws IOException
     {
-        int numberOfusers = 5;   // Indicate no of users 
+        // int numberOfusers = 1;   // Indicate no of users 
 
-        // Creating a thread pool
-        ExecutorService executorService = Executors.newFixedThreadPool(numberOfusers) ;
+        // // Creating a thread pool
+        // ExecutorService executorService = Executors.newFixedThreadPool(numberOfusers) ;
         
-        for(int i = 0; i < numberOfusers; i++)
+        // for(int i = 0; i < numberOfusers; i++)
+        // {
+        //     Runnable runnableTask = new sendQuery()  ;    //  Pass arg if any as sendQuery(arg)
+        //     executorService.submit(runnableTask) ;
+        // }
+        
+        int firstLevelThreads = 3 ;   // Indicate no of users 
+        /**************************/
+        // Creating a thread pool
+        ExecutorService executorService = Executors.newFixedThreadPool(firstLevelThreads);
+        
+        for(int i = 0; i < firstLevelThreads; i++)
         {
-            Runnable runnableTask = new sendQuery()  ;    //  Pass arg if any as sendQuery(arg)
+            Runnable runnableTask = new invokeWorkers();    //  Pass arg, if any to constructor sendQuery(arg)
             executorService.submit(runnableTask) ;
         }
-        
+
         executorService.shutdown()  ;
         try
         {
-            if (!executorService.awaitTermination(900, TimeUnit.MILLISECONDS))
+            if (!executorService.awaitTermination(1001, TimeUnit.MILLISECONDS))
             {
                 executorService.shutdownNow();
             } 
