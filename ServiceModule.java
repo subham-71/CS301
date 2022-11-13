@@ -93,6 +93,8 @@ class QueryRunner implements Runnable
             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
             String pnr = "";
             String pnr_doj = DOJ.substring(0,4) + DOJ.substring(5,7) + DOJ.substring(8,10);
+
+            String response = "TICKET RESULTS:- \n";
             
             for(int i=1; i<=no_of_passengers; i++){
                 int serial_no;
@@ -149,7 +151,11 @@ class QueryRunner implements Runnable
                 query = query + ");";
                 
                 //System.out.println(query);
+                
+                response = response + "PNR : " + pnr + " NAME : " + pname + " TRAIN NO : " + train_no + " COACH NO : " + coach_no + " CLASS : " + type + " BERTH NO : " + berth_no + " TYPE : " + type + "\n";
                 st.executeUpdate(query);
+
+                
             }
 
             int update_count = checkAvailable - no_of_passengers;
@@ -159,7 +165,8 @@ class QueryRunner implements Runnable
             st.executeUpdate(update_query);
             con.commit();
             booked = 1;
-            return "Tickets has been booked for the following request";
+
+            return response;
         }
         catch(SQLException e){
             //JDBCTutorialUtilities.printSQLException(e);

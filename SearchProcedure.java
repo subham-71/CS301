@@ -2,6 +2,8 @@ import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ResourceBundle;
+import java.util.Scanner;
+import java.util.Calendar;  
 // import java.util.Scanner;
 import java.io.IOException;
 // import java.util.Scanner;
@@ -33,6 +35,7 @@ public class SearchProcedure {
             if(rs2.next()){
                 //System.out.println("================== DIRECT TRAINS =================");
                 int end_stn_order = rs2.getInt("order_of_station");
+
                 if(start_stn_order<end_stn_order){
                     option++;
                     journeyPlanner+= "Option : "+ option+"\n\tTrain-uid : "+uid + " Date-of-journey : " + doj + " Arrival Time : " + arr_time + " Deparature Time : " + dept_time+"\n"; 
@@ -53,6 +56,8 @@ public class SearchProcedure {
                         
                         String imm_stn = rs3.getString("name");
                         String arr_time_imm = rs3.getString("Arrival_time");
+                        String doj_rs3 = rs3.getString("doj");
+                        int imm_arr_offset = rs3.getInt("off_set");
                     
                         Statement st4 = con.createStatement();
                         String query4 = "Select * from station where name = '" + imm_stn + "';";
@@ -66,7 +71,8 @@ public class SearchProcedure {
                             String arr_time_imm_rs4 = rs4.getString("Arrival_time");
                             String dept_time_imm_rs4 = rs4.getString("Departure_time");
                             int start_stn_order_rs4 = rs4.getInt("order_of_station"); 
-
+                            int imm_dept_offset = rs4.getInt("off_set");
+                            String imm_station = rs4.getString("name") ; 
 
                             String query5 = "Select * from station where name = '"+ endStation + "' and uid = " + uid_rs4 + " and doj = '" + doj_rs4 + "' ;";
                         //     System.out.println(query5);
@@ -78,16 +84,32 @@ public class SearchProcedure {
                                 int end_stn_order_rs5 = rs5.getInt("order_of_station"); 
                                 
                                 SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
+                                SimpleDateFormat dojSDF = new SimpleDateFormat("yyyy-MM-dd");
                                 // Date date = null;
+
+                                java.util.Date arr_day = dojSDF.parse(doj_rs3);
+                                java.util.Date dept_day = dojSDF.parse(doj_rs4);
+
+                                Calendar cal1 = Calendar.getInstance();
+                                Calendar cal2 = Calendar.getInstance();
+                                cal1.setTime(arr_day);
+                                cal2.setTime(dept_day);
+                                cal1.add(Calendar.DAY_OF_MONTH,imm_arr_offset);
+                                cal2.add(Calendar.DAY_OF_MONTH,imm_dept_offset);
+
+                                arr_day = dojSDF.parse(dojSDF.format(cal1.getTime()));
+                                dept_day = dojSDF.parse(dojSDF.format(cal2.getTime()));
 
                                 java.util.Date arr_time_d =  sdf.parse(arr_time_imm);
                                 java.util.Date dept_time_d = sdf.parse(dept_time_imm_rs4);
 
-
-                                if((dept_time_d.compareTo(arr_time_d) > 0) && (start_stn_order_rs4<end_stn_order_rs5)){
+                                long arr_time_l = arr_day.getTime() + arr_time_d.getTime();
+                                long dept_time_l = dept_day.getTime() + dept_time_d.getTime();
+                                
+                                if( dept_time_l-arr_time_l < 10800000 && (dept_time_l-arr_time_l >= (long)0) && (start_stn_order_rs4<end_stn_order_rs5)){
                                     option+=1;
                                     journeyPlanner+= "Option : "+ option+"\n\tTrain-1-uid : "+uid + " Date-of-journey : " + doj + " Arrival Time : " + arr_time + " Deparature Time : " + dept_time;
-                                    journeyPlanner+= "\n\tTrain-2-uid : "+uid_rs4 + " Date-of-journey : " + doj_rs4 + " Arrival Time : " + arr_time_imm_rs4 + " Deparature Time : " + dept_time_imm_rs4+"\n"; 
+                                    journeyPlanner+= "\n\t" + imm_station+ "\n\tTrain-2-uid : "+uid_rs4 + " Date-of-journey : " + doj_rs4 + " Arrival Time : " + arr_time_imm_rs4 + " Deparature Time : " + dept_time_imm_rs4+"\n"; 
                                 }
                             }
                             
@@ -118,12 +140,11 @@ public class SearchProcedure {
         Class.forName("org.postgresql.Driver");
         Connection con = DriverManager.getConnection(url, username, password);
 
-        // Scanner sc = new Scanner(System.in); // System.in is a standard input stream
-        // System.out.println("Enter Start station :  ");
-        // String startStation = sc.nextLine();
+        Scanner sc = new Scanner(System.in); // System.in is a standard input stream
+        System.out.println("Enter Start station :  ");
+        String startStation = sc.nextLine();
+        String endStation = sc.nextLine();
 
-        String startStation = "Ahmedabad";
-        String endStation = "Udaipur"; 
         
         // System.out.println("Enter Destination Station : ");
         // String endStation = sc.nextLine();
@@ -132,7 +153,7 @@ public class SearchProcedure {
         String train_journey = journeySearcher(con, startStation, endStation);
         System.out.println(train_journey);
         
-        //sc.close();
+        sc.close();
         //con.close();
     }
 }

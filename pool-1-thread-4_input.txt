@@ -1,6 +1,0 @@
-3 ok7 ok8 ok9 12893 2022-02-10 sl
-Finish
-3 aman parth subham 12891 2022-12-10 AC
-<no_of_passengers> <name_of_all_passengers> <train_no> <Doj> <Class>	//query-1
-<no_of_passengers> <name_of_all_passengers> <train_no> <Doj> <Class>	//query-2
-Finish
