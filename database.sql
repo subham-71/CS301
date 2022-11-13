@@ -48,6 +48,7 @@ Uid INT not null,
 DOJ date not null,
 Arrival_time time not null,
 Departure_time time not null,
+off_set int not null,
 Order_of_station INT,
 Name VARCHAR(20) not null,
 Primary key (uid,DOJ,order_of_station)
@@ -190,3 +191,68 @@ Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station
 Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(12058,'2022-12-10', '10:32:00' , '10:34:00' , 0, 15, 'SONIPAT');
 Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(12058,'2022-12-10', '11:05:00' , '11:07:00' , 0, 16, 'SUBZI MANDI');
 Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(12058,'2022-12-10', '11:45:00' , '11:45:00' , 0, 17, 'NEW DELHI');
+
+
+
+-- # 12992
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(12992,'2022-12-10', '14:30:00' , '14:30:00' , 0, 1, 'JAIPUR');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(12992,'2022-12-10', '15:11:00' , '15:13:00' , 0, 2, 'PHULERA JN');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(12992,'2022-12-10', '15:51:00' , '15:53:00' , 0, 3, 'KISHANGARH');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(12992,'2022-12-10', '16:30:00' , '16:35:00' , 0, 4, 'AJMER JN');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(12992,'2022-12-10', '17:00:00' , '17:02:00' , 0, 5, 'NASIRABAD');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(12992,'2022-12-10', '17:29:00' , '17:31:00' , 0, 6, 'BIJAINAGAR');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(12992,'2022-12-10', '17:37:00' , '17:38:00' , 0, 7, 'GULABPURA');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(12992,'2022-12-10', '18:13:00' , '18:15:00' , 0, 8, 'MANDAL');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(12992,'2022-12-10', '18:25:00' , '18:30:00' , 0, 9, 'BHILWARA');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(12992,'2022-12-10', '19:22:00' , '19:37:00' , 0, 10, 'CHITTAURGARH');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(12992,'2022-12-10', '20:16:00' , '20:17:00' , 0, 11, 'KAPASAN');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(12992,'2022-12-10', '20:35:00' , '20:36:00' , 0, 12, 'FATEHNAGAR');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(12992,'2022-12-10', '20:48:00' , '20:50:00' , 0, 13, 'MAVLI JN');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(12992,'2022-12-10', '21:23:00' , '21:25:00' , 0, 14, 'RANAPRATAPNAGAR');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(12992,'2022-12-10', '22:00:00' , '22:00:00' , 0, 15, 'UDAIPUR CITY');
+
+
+-- # 19412
+
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(19412,'2022-12-10', '14:25:00' , '14:25:00' , 0, 1, 'DAULATPUR CHAUK');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(19412,'2022-12-10', '14:38:00' , '14:40:00' , 0, 2, 'AMB ANDAURA');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(19412,'2022-12-10', '15:02:00' , '15:04:00' , 0, 3, 'UNA HIMACHAL');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(19412,'2022-12-10', '15:25:00' , '15:35:00' , 0, 4, 'NANGAL DAM');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(19412,'2022-12-10', '15:49:00' , '15:51:00' , 0, 5, 'ANANDPUR SAHIB');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(19412,'2022-12-10', '16:16:00' , '16:18:00' , 0, 6, 'RUPNAGAR');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(19412,'2022-12-10', '16:43:00' , '16:45:00' , 0, 7, 'MORINDA');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(19412,'2022-12-10', '17:20:00' , '17:22:00' , 0, 8, 'SAHIBZADA ASNGR');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(19412,'2022-12-10', '17:43:00' , '17:55:00' , 0, 9, 'CHANDIGARH');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(19412,'2022-12-10', '18:40:00' , '18:45:00' , 0, 10, 'AMBALA CANT JN');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(19412,'2022-12-10', '19:28:00' , '19:54:00' , 0, 11, 'KURUKSHETRA JN');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(19412,'2022-12-10', '20:45:00' , '20:47:00' , 0, 12, 'KAITHAL');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(19412,'2022-12-10', '21:48:00' , '21:50:00' , 0, 13, 'NARWANA JN');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(19412,'2022-12-10', '22:02:00' , '22:04:00' , 0, 14, 'UCHANA');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(19412,'2022-12-10', '22:21:00' , '22:24:00' , 0, 15, 'JIND JN');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(19412,'2022-12-10', '22:41:00' , '22:43:00' , 0, 16, 'DJULANA');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(19412,'2022-12-10', '23:14:00' , '23:18:00' , 0, 17, 'ROHTAK JN');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(19412,'2022-12-10', '23:50:00' , '23:52:00' , 0, 18, 'JHAJJAR');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(19412,'2022-12-10', '00:55:00' , '01:00:00' , 1, 19, 'REWARI');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(19412,'2022-12-10', '01:40:00' , '01:42:00' , 1, 20, 'KHAIRTHAL');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(19412,'2022-12-10', '02:04:00' , '02:07:00' , 1, 21, 'ALWAR');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(19412,'2022-12-10', '02:32:00' , '02:34:00' , 1, 22, 'RAJGARH');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(19412,'2022-12-10', '02:57:00' , '02:59:00' , 1, 23, 'BANDIKUI JN');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(19412,'2022-12-10', '03:18:00' , '03:20:00' , 1, 24, 'DAUSA');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(19412,'2022-12-10', '03:58:00' , '04:01:00' , 1, 25, 'GANDHINAGAR JPR');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(19412,'2022-12-10', '04:20:00' , '04:30:00' , 1, 26, 'JAIPUR');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(19412,'2022-12-10', '05:12:00' , '05:13:00' , 1, 27, 'PHULERA JN');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(19412,'2022-12-10', '05:53:00' , '05:55:00' , 1, 28, 'KISHANGARH');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(19412,'2022-12-10', '06:45:00' , '06:55:00' , 1, 29, 'AJMER JN');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(19412,'2022-12-10', '07:38:00' , '07:40:00' , 1, 30, 'BEAWAR');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(19412,'2022-12-10', '08:50:00' , '08:55:00' , 1, 31, 'MARWAR JN');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(19412,'2022-12-10', '09:31:00' , '09:33:00' , 1, 32, 'RANI');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(19412,'2022-12-10', '09:48:00' , '09:50:00' , 1, 33, 'FALNA');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(19412,'2022-12-10', '10:18:00' , '10:20:00' , 1, 34, 'NANA');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(19412,'2022-12-10', '10:35:00' , '10:37:00' , 1, 35, 'PINDWARA');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(19412,'2022-12-10', '10:52:00' , '10:54:00' , 1, 36, 'SWARUPGANJ');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(19412,'2022-12-10', '11:20:00' , '11:30:00' , 1, 37, 'ABU ROAD');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(19412,'2022-12-10', '12:30:00' , '12:32:00' , 1, 38, 'PALANPUR JN');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(19412,'2022-12-10', '13:00:00' , '13:02:00' , 1, 39, 'SIDDHPUR');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(19412,'2022-12-10', '13:15:00' , '13:17:00' , 1, 40, 'UNJHA');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(19412,'2022-12-10', '13:40:00' , '13:42:00' , 1, 41, 'MAHESANA JN');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(19412,'2022-12-10', '15:00:00' , '15:00:00' , 1, 42, 'SABARMATI BG');
