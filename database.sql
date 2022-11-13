@@ -135,7 +135,7 @@ Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station
 Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(12012,'2022-12-10', '21:50:00' , '21:50:00' , 0, 6, 'NEW DELHI');
 
 -- # 22692
-Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(22692,'2022-12-10', '19:50:00' , '19:50:00' , 0, 1, 'H NIZAMUDDIN');
+Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(22692,'2022-12-10', '19:50:00' , '19:50:00' , 0, 1, 'NEW DELHI');
 Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(22692,'2022-12-10', '21:45:00' , '21:47:00' , 0, 2, 'AGRA CANTT');
 Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(22692,'2022-12-10', '23:08:00' , '23:10:00' , 0, 3, 'GWALIOR');
 Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(22692,'2022-12-10', '00:25:00' , '00:30:00' , 1, 4, 'V LAKSHMIBAI');
