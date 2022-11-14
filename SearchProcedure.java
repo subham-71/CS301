@@ -143,11 +143,11 @@ public class SearchProcedure {
         Scanner sc = new Scanner(System.in); // System.in is a standard input stream
         System.out.println("Enter Start station :  ");
         String startStation = sc.nextLine();
-        String endStation = sc.nextLine();
+        // String endStation = sc.nextLine();
 
         
-        // System.out.println("Enter Destination Station : ");
-        // String endStation = sc.nextLine();
+        System.out.println("Enter Destination Station : ");
+        String endStation = sc.nextLine();
 
 
         String train_journey = journeySearcher(con, startStation, endStation);

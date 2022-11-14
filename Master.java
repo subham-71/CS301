@@ -1,4 +1,4 @@
-// import java.util.Scanner;
+import java.util.Scanner;
 // import java.io.BufferedReader;
 // import java.io.DataInputStream;
 // import java.io.InputStream;
@@ -12,12 +12,14 @@ public class Master{
         System.out.println("2. Booking Procedure\n");
         System.out.println("3. Search Procedure\n");
 
-        // Scanner sc = new Scanner(System.in);
-        // int select = sc.nextInt();
-        int select = 1;
+         
+
+        Scanner sc = new Scanner(System.in);
+        int select = sc.nextInt();
 
         if(select == 1){
             try {
+                
                 // Process p1 = Runtime.getRuntime().exec("javac admin.java");
                 // p1.waitFor();
                 // Process p2 = Runtime.getRuntime().exec("java admin");
@@ -58,6 +60,6 @@ public class Master{
             }
         }
 
-        // sc.close();
+        sc.close();
     }
 }

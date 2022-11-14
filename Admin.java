@@ -79,6 +79,8 @@ public class Admin {
     
     public static void main(String[] args) throws Exception {
 
+            System.out.println("Admin Called\n");
+            String driver_class = "org.postgresql.Driver";
             String inputfile = "Trainschedule.txt" ;
             File queries = new File(inputfile);
             Scanner sc = new Scanner(queries);
