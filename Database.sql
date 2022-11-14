@@ -1,5 +1,10 @@
 CREATE DATABASE railway;
 \c railway
+
+-- ================================================================== TABLES ==================================================================
+
+-- TRAIN 
+
 CREATE TABLE train(
 uid INT NOT NULL,
 ac_count INT NOT NULL,
@@ -7,16 +12,25 @@ sl_count INT NOT NULL,
 DOJ DATE NOT NULL,
 Primary key(uid, doj)
 );
+
+-- AC COACH
+
 CREATE TABLE AC_CC(
 berth_no INT not null,
 Type VARCHAR(2) not null,
 Primary key(berth_no)
 );
+
+-- SL COACH
+
 CREATE TABLE SL_CC(
 berth_no INT not null,
 Type VARCHAR(2) not null,
 Primary key(berth_no)
 );
+
+-- TICKET RECORDS
+
 CREATE TABLE ticket_records(
 uid INT not null,
 Booking_timestamp TIMESTAMP,
@@ -29,6 +43,9 @@ PNR VARCHAR (20) not null,
 passenger_name VARCHAR(20) not null,
 Primary key(uid, berth_no, DOJ, coach_no, coach_type, seat_type)
 );
+
+-- STATION 
+
 CREATE TABLE station(
 Uid INT not null,
 DOJ date not null,
@@ -39,9 +56,8 @@ Order_of_station INT,
 Name VARCHAR(20) not null,
 Primary key (uid,DOJ,order_of_station)
 );
--- DUMMY DATA QUERY
-Insert into train(uid,ac_count,sl_count,DOJ) values(12891,  5, 6, ‘2022-12-10’);
-Insert into train(uid,ac_count,sl_count,DOJ) values(12891,  5, 6, ‘2022-12-11’);
+ 
+-- ================================================================== COACH DATA ==================================================================
  
 -- AC
 Insert into ac_cc(berth_no,type) values(1,'lb');
@@ -90,7 +106,8 @@ Insert into sl_cc(berth_no,type) values(23,'sl');
 Insert into sl_cc(berth_no,type) values(24,'su');
 
 
--- ======================== TRAINS ==================================
+-- ================================================================== TRAINS ==================================================================
+
 -- # 12046
 Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(12046,'2022-12-10', '12:05:00' , '12:05:00' , 0, 1, 'CHANDIGARH');
 Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(12046,'2022-12-10', '12:43:00' , '12:47:00' , 0, 2, 'AMBALA CANT JN');
