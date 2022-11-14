@@ -93,6 +93,7 @@ class QueryRunner implements Runnable
             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
             String pnr = "";
             String pnr_doj = DOJ.substring(0,4) + DOJ.substring(5,7) + DOJ.substring(8,10);
+            String masterQuery = "";
 
             String response = "TICKET RESULTS:- \n";
             
@@ -153,10 +154,9 @@ class QueryRunner implements Runnable
                 //System.out.println(query);
                 
                 response = response + "PNR : " + pnr + " NAME : " + pname + " TRAIN NO : " + train_no + " COACH NO : " + coach_no + " CLASS : " + type + " BERTH NO : " + berth_no + " TYPE : " + type + "\n";
-                st.executeUpdate(query);
-
-                
+                masterQuery += query;
             }
+            st.executeUpdate(masterQuery);
 
             int update_count = checkAvailable - no_of_passengers;
             String update_query = "update " + table_name + " set available = " + Integer.toString(update_count) + ";";
