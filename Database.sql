@@ -43,6 +43,7 @@ Primary key (uid,DOJ,order_of_station)
 Insert into train(uid,ac_count,sl_count,DOJ) values(12891,  5, 6, ‘2022-12-10’);
 Insert into train(uid,ac_count,sl_count,DOJ) values(12891,  5, 6, ‘2022-12-11’);
  
+-- AC
 Insert into ac_cc(berth_no,type) values(1,'lb');
 Insert into ac_cc(berth_no,type) values(2,'lb');
 Insert into ac_cc(berth_no,type) values(3,'ub');
@@ -61,6 +62,8 @@ Insert into ac_cc(berth_no,type) values(15,'ub');
 Insert into ac_cc(berth_no,type) values(16,'ub');
 Insert into ac_cc(berth_no,type) values(17,'sl');
 Insert into ac_cc(berth_no,type) values(18,'su');
+
+-- SL
 Insert into sl_cc(berth_no,type) values(1,'lb');
 Insert into sl_cc(berth_no,type) values(2,'mb');
 Insert into sl_cc(berth_no,type) values(3,'ub');
@@ -85,6 +88,8 @@ Insert into sl_cc(berth_no,type) values(21,'mb');
 Insert into sl_cc(berth_no,type) values(22,'ub');
 Insert into sl_cc(berth_no,type) values(23,'sl');
 Insert into sl_cc(berth_no,type) values(24,'su');
+
+
 -- ======================== TRAINS ==================================
 -- # 12046
 Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(12046,'2022-12-10', '12:05:00' , '12:05:00' , 0, 1, 'CHANDIGARH');
@@ -100,7 +105,6 @@ Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station
 Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(12012,'2022-12-10', '21:50:00' , '21:50:00' , 0, 6, 'NEW DELHI');
 
 -- # 22692
-Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(22692,'2022-12-10', '19:50:00' , '19:50:00' , 0, 1, 'H NIZAMUDDIN');
 Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(22692,'2022-12-10', '19:50:00' , '19:50:00' , 0, 1, 'NEW DELHI');
 Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(22692,'2022-12-10', '21:45:00' , '21:47:00' , 0, 2, 'AGRA CANTT');
 Insert into station(uid,doj,arrival_time,departure_time,off_set,order_of_station,name) values(22692,'2022-12-10', '23:08:00' , '23:10:00' , 0, 3, 'GWALIOR');
