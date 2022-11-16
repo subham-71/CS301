@@ -9,6 +9,9 @@ import java.net.Socket;
 import java.util.StringTokenizer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import org.apache.commons.dbcp2.BasicDataSource;
+
 import java.util.ResourceBundle;
 
 // import java.time.Duration;
@@ -205,8 +208,16 @@ class QueryRunner implements Runnable
             String username = rd.getString("username");
             String password = rd.getString("password");
 
+            BasicDataSource dataSource = new BasicDataSource();
+            dataSource.setUrl(url);
+            dataSource.setUsername(username);
+            dataSource.setPassword(password);
+            dataSource.setMinIdle(5);
+            dataSource.setMaxIdle(10);
+            dataSource.setMaxTotal(25);
+
             Class.forName("org.postgresql.Driver");
-            Connection con = DriverManager.getConnection(url, username, password);
+            Connection con = dataSource.getConnection();
             
             // Setting all transaction isolation to serializable
             con.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
@@ -288,7 +299,7 @@ class QueryRunner implements Runnable
 public class ServiceModule 
 {
     static int serverPort = 7005;
-    static int numServerCores = 100 ;
+    static int numServerCores = 100;
     //------------ Main----------------------
     public static void main(String[] args) throws IOException 
     {    
