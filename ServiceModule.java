@@ -31,10 +31,9 @@ class QueryRunner implements Runnable
     // void bookingFunction(Connection con, int no_of_passengers, String name_of_all_passengers, int train_no, String DOJ, String Class) throws SQLException {
     public String bookingFunction(Connection con, ArrayList <String> tokens) throws SQLException {    
 
-        int booked = 0;
-
         int no_of_passengers = Integer.parseInt(tokens.get(0));
         String train_no = tokens.get(no_of_passengers+1);
+        train_no = Integer.toString(Integer.parseInt(train_no));
         String DOJ = tokens.get(no_of_passengers+2);
         String Class = tokens.get(no_of_passengers+3);
         
@@ -156,15 +155,14 @@ class QueryRunner implements Runnable
                 response = response + "PNR : " + pnr + " NAME : " + pname + " TRAIN NO : " + train_no + " COACH NO : " + coach_no + " CLASS : " + type + " BERTH NO : " + berth_no + " TYPE : " + type + "\n";
                 masterQuery += query;
             }
-            st.executeUpdate(masterQuery);
 
             int update_count = checkAvailable - no_of_passengers;
             String update_query = "update " + table_name + " set available = " + Integer.toString(update_count) + ";";
+            update_query+=masterQuery;
 
             //System.out.println(update_query);
             st.executeUpdate(update_query);
             con.commit();
-            booked = 1;
 
             return response;
         }
@@ -290,7 +288,7 @@ class QueryRunner implements Runnable
 public class ServiceModule 
 {
     static int serverPort = 7005;
-    static int numServerCores = 2 ;
+    static int numServerCores = 100 ;
     //------------ Main----------------------
     public static void main(String[] args) throws IOException 
     {    

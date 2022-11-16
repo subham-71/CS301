@@ -11,6 +11,7 @@ public class Admin {
     // public static void admin(Connection con, int train_no, int ac_coach_count, int sl_coach_count, String DOJ) throws SQLException{
         
         String train_no = tokens.get(0);
+        train_no = Integer.toString(Integer.parseInt(train_no));
         String DOJ = tokens.get(1);
         String ac_coach_count = tokens.get(2);
         String sl_coach_count = tokens.get(3); 
@@ -80,7 +81,7 @@ public class Admin {
     public static void main(String[] args) throws Exception {
 
             System.out.println("Admin Called\n");
-            String driver_class = "org.postgresql.Driver";
+            // String driver_class = "org.postgresql.Driver";
             String inputfile = "Trainschedule.txt" ;
             File queries = new File(inputfile);
             Scanner sc = new Scanner(queries);
