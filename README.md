@@ -21,9 +21,9 @@
 
 4. Start the ServiceModule.java. 
 
-5. Run the Client.java file to simulate multiple clients who will be firing the booking requests simulatneously.
+5. Run the client.java file to simulate multiple clients who will be firing the booking requests simulatneously.
 
-
+6. Run the SearchProcedure.java file to find train between stations.
 
 ## Implementation :
 
