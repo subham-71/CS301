@@ -1,6 +1,7 @@
 import java.sql.*;
 import java.util.ResourceBundle;
 
+// For testing connection to the postgres database
 public class ConnectDB {
         
         public static void main(String[] args) throws Exception {

@@ -2,6 +2,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;  
 
+// For testing the day offset combined with date and day time
 public class test{
     public static void main(String[] args) throws ParseException
     {

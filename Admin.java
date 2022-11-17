@@ -7,9 +7,10 @@ import java.util.StringTokenizer;
 
 public class Admin {
 
+    // admin function to add train information in the database
     public static void admin(Connection con, ArrayList <String> tokens) throws SQLException{
-    // public static void admin(Connection con, int train_no, int ac_coach_count, int sl_coach_count, String DOJ) throws SQLException{
         
+        // parse input from Train Schedule to add trains 
         String train_no = tokens.get(0);
         train_no = Integer.toString(Integer.parseInt(train_no));
         String DOJ = tokens.get(1);
@@ -40,13 +41,15 @@ public class Admin {
         String AC_insert = "INSERT INTO "+ ac_table_name + "(available) values(" + Integer.toString(Integer.parseInt(ac_coach_count)*18)+");";
         String SL_insert = "INSERT INTO "+ sl_table_name + "(available) values(" + Integer.toString(Integer.parseInt(sl_coach_count)*24)+");";
         
-        try{
+        // inserting train information in TRAIN table
+        try{ 
             st.executeUpdate(query_insert);
 
         } catch(SQLException e){
             System.out.println("Record already exists.") ;
         }
 
+        // creating tables for ac coach - contains available seats
         try{
             st.executeUpdate(AC_table);
 
@@ -54,6 +57,7 @@ public class Admin {
             System.out.println("Record already exists.") ;
         }
 
+        // creating tables for sleeper coach - contains available seats
         try{
             st.executeUpdate(SL_table);
 
@@ -61,6 +65,7 @@ public class Admin {
             System.out.println("Record already exists.") ;
         }
 
+        // inserting available seats in ac coach
         try{
             st.executeUpdate(AC_insert);
 
@@ -68,6 +73,7 @@ public class Admin {
             System.out.println("Record already exists."); 
         }
 
+        // inserting available seats in sleeper coach
         try{
             st.executeUpdate(SL_insert);
 
@@ -82,10 +88,11 @@ public class Admin {
 
             System.out.println("Admin Called\n");
             // String driver_class = "org.postgresql.Driver";
-            String inputfile = "Trainschedule.txt" ;
+            String inputfile = "Trainschedule.txt" ; // to be parsed
             File queries = new File(inputfile);
             Scanner sc = new Scanner(queries);
 
+            // JDBC connection
             ResourceBundle rd = ResourceBundle.getBundle("config");
             String url = rd.getString("url");
             String username = rd.getString("username");
@@ -97,12 +104,12 @@ public class Admin {
             String query = "";
             String queryInput = "" ;
             
-            while(sc.hasNextLine())
+            while(sc.hasNextLine()) // scanning each line from file - considered as one query
             {
                 query = sc.nextLine();
                 StringTokenizer tokenizer = new StringTokenizer(query);
                 queryInput = tokenizer.nextToken();
-                if(queryInput.equals("#")) // EOF: # 
+                if(queryInput.equals("#")) // EOF - end of file marker 
                 {
                     return;
                 }
@@ -114,7 +121,7 @@ public class Admin {
                     tokens.add(queryInput);
                 }
 
-                admin(con,tokens);
+                admin(con,tokens); // sent parsed tokens from each line to admin function
             }
 
             sc.close();

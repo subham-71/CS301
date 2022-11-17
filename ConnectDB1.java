@@ -2,7 +2,7 @@ import java.sql.*;
 import java.util.ResourceBundle;
 import org.apache.commons.dbcp2.BasicDataSource;
 
-
+// For testing connection pool to the postgres database
 public class ConnectDB1 {
 
         public static void main(String[] args) throws Exception {
