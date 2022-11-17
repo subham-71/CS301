@@ -9,7 +9,7 @@
 
 ## Steps to run :
 
-# Manually
+### Manually
 
 0. Make a config.properties file where you place your database name, username and password of postgreSQL database.
 
@@ -27,7 +27,7 @@
 
 6. Run the SearchProcedure.java file to find train between stations.
 
-# Through Master File
+#### Through Master File
 
 1. Run Master.py
 
