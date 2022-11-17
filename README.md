@@ -9,6 +9,8 @@
 
 ## Steps to run :
 
+# Manually
+
 0. Make a config.properties file where you place your database name, username and password of postgreSQL database.
 
 1. To Add Trains: Give the train Number , date of journey and respective number of coaches in Trainschedule.txt. <br/>
@@ -24,6 +26,12 @@
 5. Run the client.java file to simulate multiple clients who will be firing the booking requests simulatneously.
 
 6. Run the SearchProcedure.java file to find train between stations.
+
+# Through Master File
+
+1. Run Master.py
+
+2. Select Options to perform the action accordingly.
 
 ## Implementation :
 
