@@ -27,7 +27,7 @@
 
 6. Run the SearchProcedure.java file to find train between stations.
 
-#### Through Master File
+### Through Master File
 
 1. Run Master.py
 
